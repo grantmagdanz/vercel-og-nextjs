@@ -1,45 +1,29 @@
 import { ImageResponse } from '@vercel/og'
+import parse from 'html-react-parser'
+import React from 'react'
 
 export const config = {
   runtime: 'edge',
 }
 
 export default async function handler() {
+  const parsedText = parse('<div><p>Here is an image:</p><img src="https://perch-development.s3.amazonaws.com/answer-pictures/Perch___Avatar_07_aac44e90-44c0-4844-a8c4-5e1b09e89374.png"><p>This comes after the image</p></div>')
+
+  const Component = () => {
+    console.log(parsedText)
+    if (typeof parsedText === 'string') {
+      return <div>{parsedText}</div>
+    } else if (Array.isArray(parsedText)) {
+      return <div>{parsedText.map((item) => <div>{item}</div>)}</div>
+    }
+    console.log("blah")
+    return parsedText
+  }
+
   return new ImageResponse(
     (
-      <div
-        style={{
-          backgroundColor: '#fff',
-          backgroundImage:
-            'radial-gradient(circle at 25px 25px, lightgray 2%, transparent 0%), radial-gradient(circle at 75px 75px, lightgray 2%, transparent 0%)',
-          backgroundSize: '100px 100px',
-          height: '100%',
-          width: '100%',
-          textAlign: 'center',
-          alignContent: 'center',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          display: 'flex',
-        }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt="Vercel"
-          width={255}
-          height={225}
-          src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTE2IiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTU3LjUgMEwxMTUgMTAwSDBMNTcuNSAweiIgLz48L3N2Zz4="
-          style={{ margin: '0 75px' }}
-        />
-        <div
-          style={{
-            fontSize: 60,
-            marginTop: 30,
-            lineHeight: 1.8,
-          }}
-        >
-          Vercel Edge Network
-        </div>
+      <div>
+        <p>test</p>
       </div>
     ),
     {
